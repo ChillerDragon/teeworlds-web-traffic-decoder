@@ -1,0 +1,4 @@
+venv/
+tags
+tags.lock
+__pycache__/
