@@ -2,6 +2,7 @@
 
 from flask import Flask
 from flask import render_template
+from flask import request
 
 import sys
 import time
@@ -17,10 +18,13 @@ import dpkt
 import twnet_parser.packet
 import twnet_parser.huffman
 
+import src.log_config
+
 app = Flask(__name__)
 
 @app.route('/')
 def index():
+    app.logger.info("hello world")
     return render_template('index.html.j2', foo = "bar")
 
 def str_to_bytes(data):
@@ -101,6 +105,14 @@ def hex_str_to_annotation(hex_str):
     return '\n'.join(messages)
 
 @app.route('/api/v1/decode/<string:packet>', methods=["POST"])
-def api_decode(packet):
-    app.logger.info(f"got packet: {packet}")
+def api_decode_url(packet):
+    app.logger.info(f"got packet via url: {packet}")
+    return {'message': hex_str_to_annotation(packet)}
+
+@app.route('/api/v1/decode', methods=["POST"])
+def api_decode_form():
+    packet = request.form['data']
+    if not packet:
+        return {'error': 'data can not be empty'}
+    app.logger.info(f"got packet via form: {packet}")
     return {'message': hex_str_to_annotation(packet)}
