@@ -11,28 +11,27 @@ const form = document.querySelector('form')
  * @param {string} outputName Class name of the output div.
  *                            Will be created if it does not exist already
  */
-const fetchToBox = (formData, outputName) => {
+const fetchToBox = async (formData, outputName) => {
   const options = {
     method: 'POST',
     body: formData
   }
-  fetch(form.action, options)
-    .then(response => response.json())
-    .then(data => {
-      if (data.message) {
-        const outputDiv = document.querySelector(`.${outputName}`)
-        if (!outputDiv) {
-          outputs.insertAdjacentHTML('beforeend', `<div class="${outputName} code-snippet delete-me">${data.message}</div>`)
-        } else {
-          outputDiv.innerHTML = data.message
-        }
-      } else {
-        console.warn(data)
-      }
-    })
+  const response = await fetch(form.action, options)
+  const data = await response.json()
+
+  if (data.message) {
+    const outputDiv = document.querySelector(`.${outputName}`)
+    if (!outputDiv) {
+      outputs.insertAdjacentHTML('beforeend', `<div class="${outputName} code-snippet delete-me">${data.message}</div>`)
+    } else {
+      outputDiv.innerHTML = data.message
+    }
+  } else {
+    console.warn(data)
+  }
 }
 
-const decode = () => {
+const decode = async () => {
   const formData = new FormData(form)
   const tcpdumpSplits = getTcpDumpSplits(input.value)
 
@@ -48,7 +47,7 @@ const decode = () => {
         break
       }
       formData.set('data', split)
-      fetchToBox(formData, `output-${String(i).padStart(2, '0')}`)
+      await fetchToBox(formData, `output-${String(i).padStart(2, '0')}`)
     }
   } else {
     fetchToBox(formData, 'output-01')
