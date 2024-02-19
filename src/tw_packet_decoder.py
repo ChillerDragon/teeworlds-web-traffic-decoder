@@ -6,12 +6,12 @@ from binascii import hexlify
 import string
 from importlib.metadata import version
 
-import dpkt
 import twnet_parser.packet
 import twnet_parser.huffman
 from twnet_parser.packet import TwPacket
 
 from .tcpdump import hex_from_tcpdump
+from .udp import extract_udp_payload
 
 def str_to_bytes(data: str) -> bytes:
     data = data.strip()
@@ -44,8 +44,6 @@ def hex_str_to_annotation(hex_str: str) -> str:
     # data = "0x02 0xff 0x03"
     # print(str_to_bytes(data))
 
-    messages = []
-
     invalid_hex = False
 
     try:
@@ -62,25 +60,7 @@ def hex_str_to_annotation(hex_str: str) -> str:
         except ValueError:
             return 'invalid hex'
 
-    udp_payload = data
-    try:
-        ip = dpkt.ethernet.Ethernet(data).data
-        if not isinstance(ip.data, dpkt.udp.UDP):
-            raise ValueError("not udp")
-        udp_payload = ip.data.data
-        messages.append("extracting udp payload from ethernet packet ...")
-    except:
-        pass
-    try:
-        ip = dpkt.ip.IP(data)
-        if not isinstance(ip.data, dpkt.udp.UDP):
-            raise ValueError("not udp")
-        udp_payload = ip.data.data
-        messages.append("extracting udp payload from ip packet ...")
-    except:
-        pass
-
-    data = udp_payload
+    data, messages = extract_udp_payload(data)
 
     messages.append(f"[twnet_parser v{version('twnet_parser')}][huffman={twnet_parser.huffman.backend_name()}] udp payload: {data.hex(sep = ' ')}")
 
