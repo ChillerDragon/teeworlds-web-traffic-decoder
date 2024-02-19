@@ -30,11 +30,12 @@ const fetchToBox = async (formData, outputName) => {
     }
   } else {
     console.warn(data)
+    return null
   }
 
   if (data.bytes) {
     return data.bytes
-  } else {
+  } else if (data.bytes !== '') {
     console.warn("no bytes in response")
     console.warn(data)
   }
