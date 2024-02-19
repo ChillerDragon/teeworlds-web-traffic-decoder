@@ -18,7 +18,7 @@ def extract_udp_payload(data: bytes) -> Tuple[bytes, List[str]]:
             raise ValueError("not udp")
         udp_payload = ip.data.data
         messages.append("extracting udp payload from ethernet packet ...")
-    except (ValueError, AttributeError):
+    except:
         pass
     try:
         ip = dpkt.ip.IP(data)
@@ -28,18 +28,18 @@ def extract_udp_payload(data: bytes) -> Tuple[bytes, List[str]]:
             raise ValueError("not udp")
         udp_payload = ip.data.data
         messages.append("extracting udp payload from ip packet ...")
-    except ValueError:
+    except ValueError: # TODO: catch all again when done with debugging
         pass
 
     data = udp_payload
     return (data, messages)
 
 
-data = \
-    b'\x60\x0a\xa5\x6d\x00\x1d\x11\x40\x00\x00\x00\x00\x00\x00\x00\x00' \
-    b'\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00' \
-    b'\x00\x00\x00\x00\x00\x00\x00\x01\x20\x6f\xd9\xc8\x00\x1d\x00\x30' \
-    b'\x00\x19\x02\x23\xec\x92\x03\x00\x05\x15\x9e\xa0\x05\x0c\x00\x05' \
-    b'\x0f\x9e\xa0\x05\x02'
-
-print(extract_udp_payload(data))
+# data = \
+#     b'\x60\x0a\xa5\x6d\x00\x1d\x11\x40\x00\x00\x00\x00\x00\x00\x00\x00' \
+#     b'\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00' \
+#     b'\x00\x00\x00\x00\x00\x00\x00\x01\x20\x6f\xd9\xc8\x00\x1d\x00\x30' \
+#     b'\x00\x19\x02\x23\xec\x92\x03\x00\x05\x15\x9e\xa0\x05\x0c\x00\x05' \
+#     b'\x0f\x9e\xa0\x05\x02'
+# 
+# print(extract_udp_payload(data))
