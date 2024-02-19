@@ -10,7 +10,6 @@ import src.tw_packet_decoder
 app = Flask(__name__)
 
 def req_ipaddr() -> str:
-    print(request)
     if not 'HTTP_X_FORWARDED_FOR' in request.environ:
         return request.remote_addr
     return request.environ['HTTP_X_FORWARDED_FOR'].split(',')[-1].strip()
