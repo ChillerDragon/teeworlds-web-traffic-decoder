@@ -11,11 +11,16 @@
     <div class="content">
         <h1>teeworlds network traffic decoder</h1>
         <form action="/api/v1/decode" method="POST">
+            <label for="protocol-6">0.6</label>
+            <input type="checkbox" name="protocol-6" id="protocol-6" checked>
+            <label for="protocol-7">0.7</label>
+            <input type="checkbox" name="protocol-7" id="protocol-7" checked>
             <textarea name="data" id="data"></textarea>
         </form>
         <pre class="outputs">
             <div class="output-01 code-snippet"></div>
         </pre>
+        <script src="/static/js/config.js" defer></script>
         <script src="/static/js/split.js" defer></script>
         <script src="/static/js/main.js" defer></script>
     </div>

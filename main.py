@@ -25,13 +25,14 @@ def index():
 def api_decode_url(packet):
     log_request()
     app.logger.info(f"{req_ipaddr()} send payload via url: {packet}")
-    return {'message': src.tw_packet_decoder.hex_str_to_annotation(packet)}
+    return {'message': src.tw_packet_decoder.hex_str_to_annotation(packet, True, True)}
 
 @app.route('/api/v1/decode', methods=["POST"])
 def api_decode_form():
     log_request()
     packet = request.form['data']
+    app.logger.info(request.form)
     if not packet:
         return {'error': 'data can not be empty'}
     app.logger.info(f"{req_ipaddr()} send payload via form: {packet}")
-    return {'message': src.tw_packet_decoder.hex_str_to_annotation(packet)}
+    return {'message': src.tw_packet_decoder.hex_str_to_annotation(packet, 'protocol-6' in request.form, 'protocol-7' in request.form)}

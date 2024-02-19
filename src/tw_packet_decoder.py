@@ -30,7 +30,7 @@ def twpacket_to_str(packet: TwPacket) -> str:
         messages.append(str(msg))
     return '\n'.join(messages)
 
-def hex_str_to_annotation(hex_str: str) -> str:
+def hex_str_to_annotation(hex_str: str, protocol_6: bool, protocol_7: bool) -> str:
     # data = """  4500 0035 1aeb 4000 4011 21cb 7f00 0001
     #   7f00 0001 f367 206f 0021 fe34 100c 0142
     #     780d 8855 e9f0 87e6 0768 d6d0 5bf8 692f
@@ -64,18 +64,23 @@ def hex_str_to_annotation(hex_str: str) -> str:
 
     messages.append(f"[twnet_parser v{version('twnet_parser')}][huffman={twnet_parser.huffman.backend_name()}] udp payload: {data.hex(sep = ' ')}")
 
-    messages.append("--- 0.7")
-    try:
-        packet = twnet_parser.packet.parse7(data)
-        messages.append(twpacket_to_str(packet))
-    except Exception:
-        messages.append(traceback.format_exc())
+    if protocol_7:
+        messages.append("--- 0.7")
+        try:
+            packet = twnet_parser.packet.parse7(data)
+            messages.append(twpacket_to_str(packet))
+        except Exception:
+            messages.append(traceback.format_exc())
 
-    messages.append("--- 0.6")
-    try:
-        packet = twnet_parser.packet.parse6(data)
-        messages.append(twpacket_to_str(packet))
-    except Exception:
-        messages.append(traceback.format_exc())
+    if protocol_6:
+        messages.append("--- 0.6")
+        try:
+            packet = twnet_parser.packet.parse6(data)
+            messages.append(twpacket_to_str(packet))
+        except Exception:
+            messages.append(traceback.format_exc())
+
+    if not protocol_6 and not protocol_7:
+        messages.append('No protocol selected. Not decoding.')
 
     return '\n'.join(messages)
