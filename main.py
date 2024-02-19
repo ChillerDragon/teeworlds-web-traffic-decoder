@@ -30,6 +30,9 @@ def api_decode_url(packet):
 @app.route('/api/v1/decode', methods=["POST"])
 def api_decode_form():
     log_request()
+    if 'data' not in request.form:
+        app.logger.warning('did some hacker just try sending an empty form?')
+        return
     packet = request.form['data']
     app.logger.info(request.form)
     if not packet:
