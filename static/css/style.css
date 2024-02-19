@@ -1,0 +1,28 @@
+.code-snippet {
+  background-color: #42414d;
+  border-radius: 1em;
+  overflow: scroll;
+  font-feature-settings:"liga" 0, "dlig" 0;
+}
+
+html, body {
+  background-color: #2b2a33;
+  color: #a5a5ac;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1em;
+}
+
+.content {
+  max-width: 900px;
+  margin: 10px auto;
+}
+
+textarea {
+  background-color: #42414d;
+  color: #a5a5ac;
+  width: 100%;
+  height: 40vh;
+  margin: 0;
+  padding: 0;
+  border-width: 0;
+}

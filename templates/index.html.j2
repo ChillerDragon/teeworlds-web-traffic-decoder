@@ -8,11 +8,15 @@
     <title>Teeworlds network traffic decoder</title>
 </head>
 <body>
-    <h1>hello</h1>
-    <form action="/api/v1/decode" method="POST">
-        <input type="textarea" name="data" id="data">
-    </form>
-    <div class="output"></div>
-    <script src="/static/js/main.js"></script>
+    <div class="content">
+        <h1>teeworlds traffic decoder</h1>
+        <form action="/api/v1/decode" method="POST">
+            <textarea name="data" id="data"></textarea>
+        </form>
+        <pre>
+            <div class="output code-snippet"></div>
+        </pre>
+        <script src="/static/js/main.js"></script>
+    </div>
 </body>
 </html>

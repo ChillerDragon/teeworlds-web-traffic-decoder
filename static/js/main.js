@@ -23,6 +23,6 @@ form.addEventListener('submit', (event) => {
   decode()
 })
 
-input.addEventListener('keydown', () => {
+input.addEventListener('keyup', () => {
   decode()
 })
