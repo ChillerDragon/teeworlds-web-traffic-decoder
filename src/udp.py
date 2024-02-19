@@ -12,36 +12,38 @@ def extract_udp_payload(data: bytes) -> Tuple[bytes, List[str]]:
     """
     messages: List[str] = []
     udp_payload = data
+    # ethernet
     try:
         ip = dpkt.ethernet.Ethernet(data).data
         if not isinstance(ip.data, dpkt.udp.UDP):
-            print("not ethernet")
+            print("ethernet but not udp payload")
             raise ValueError("not udp")
         udp_payload = ip.data.data
         messages.append("extracting udp payload from ethernet packet ...")
     except:
         pass
+    # ipv6
+    try:
+        ip = dpkt.ip6.IP6(data)
+        print(ip.data)
+        if not isinstance(ip.data, dpkt.udp.UDP):
+            print("ipv6 but not udp payload")
+            raise ValueError("not udp")
+        udp_payload = ip.data.data
+        messages.append("extracting udp payload from ipv6 packet ...")
+    except:
+        pass
+    # ipv4
     try:
         ip = dpkt.ip.IP(data)
         print(ip.data)
         if not isinstance(ip.data, dpkt.udp.UDP):
-            print("not udp")
+            print("ipv4 but not udp payload")
             raise ValueError("not udp")
         udp_payload = ip.data.data
-        messages.append("extracting udp payload from ip packet ...")
+        messages.append("extracting udp payload from ipv4 packet ...")
     except:
         pass
 
     data = udp_payload
     return (data, messages)
-
-
-
-# data = \
-#     b'\x60\x0a\xa5\x6d\x00\x1d\x11\x40\x00\x00\x00\x00\x00\x00\x00\x00' \
-#     b'\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00' \
-#     b'\x00\x00\x00\x00\x00\x00\x00\x01\x20\x6f\xd9\xc8\x00\x1d\x00\x30' \
-#     b'\x00\x19\x02\x23\xec\x92\x03\x00\x05\x15\x9e\xa0\x05\x0c\x00\x05' \
-#     b'\x0f\x9e\xa0\x05\x02'
-# 
-# print(extract_udp_payload(data))
