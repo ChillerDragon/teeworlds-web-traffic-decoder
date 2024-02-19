@@ -3,6 +3,7 @@
   border-radius: 1em;
   overflow: scroll;
   font-feature-settings:"liga" 0, "dlig" 0;
+  padding: 12px;
 }
 
 html, body {
@@ -13,7 +14,7 @@ html, body {
 }
 
 .content {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 10px auto;
 }
 

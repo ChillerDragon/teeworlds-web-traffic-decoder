@@ -25,9 +25,9 @@ def str_to_bytes(data):
 
 def twpacket_to_str(packet):
     messages = []
-    messages.append(packet.header)
+    messages.append(str(packet.header))
     for msg in packet.messages:
-        messages.append(msg)
+        messages.append(str(msg))
     return '\n'.join(messages)
 
 def hex_str_to_annotation(hex_str):
