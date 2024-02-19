@@ -39,3 +39,12 @@ Traceback (most recent call last):
 IndexError: index out of range
 
 ```
+
+## development
+
+run tests
+
+```
+pytest .
+```
+
