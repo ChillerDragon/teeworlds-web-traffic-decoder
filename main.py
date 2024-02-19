@@ -14,17 +14,22 @@ def req_ipaddr() -> str:
         return request.remote_addr
     return request.environ['HTTP_X_FORWARDED_FOR'].split(',')[-1].strip()
 
+def log_request() -> str:
+    app.logger.info(f"{request.method} {request.url} ip={req_ipaddr()} ua={request.headers.get('User-Agent')}")
+
 @app.route('/')
 def index():
     return render_template('index.html.j2', foo = "bar")
 
 @app.route('/api/v1/decode/<string:packet>', methods=["POST"])
 def api_decode_url(packet):
+    log_request()
     app.logger.info(f"{req_ipaddr()} send payload via url: {packet}")
     return {'message': src.tw_packet_decoder.hex_str_to_annotation(packet)}
 
 @app.route('/api/v1/decode', methods=["POST"])
 def api_decode_form():
+    log_request()
     packet = request.form['data']
     if not packet:
         return {'error': 'data can not be empty'}
