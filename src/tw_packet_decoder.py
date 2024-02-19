@@ -12,6 +12,8 @@ import dpkt
 import twnet_parser.packet
 import twnet_parser.huffman
 
+from .tcpdump import hex_from_tcpdump
+
 def str_to_bytes(data):
     data = data.strip()
     if re.match('^b[\'\"].*[\'\"]$', data):
@@ -46,10 +48,21 @@ def hex_str_to_annotation(hex_str):
 
     messages = []
 
+    invalid_hex = False
+
     try:
         data = str_to_bytes(hex_str)
     except ValueError:
-        return 'invalid hex'
+        invalid_hex = True
+
+    if invalid_hex:
+        hex_str = hex_from_tcpdump(hex_str.split('\n'))
+        if len(hex_str) == 0:
+            return 'invalid hex'
+        try:
+            data = str_to_bytes(' '.join(hex_str))
+        except ValueError:
+            return 'invalid hex'
 
     udp_payload = data
     try:
