@@ -7,7 +7,8 @@ pip install -r requirements.txt || exit 1
 
 logfile=./logs/gunicorn_"$(date '+%F_%H-%M')".txt
 
-echo "logging to $logfile"
+echo "logging to: $logfile"
+echo "running on: http://127.0.0.1:9822"
 
 gunicorn \
 	--workers 4 \
