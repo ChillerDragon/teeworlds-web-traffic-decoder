@@ -10,6 +10,8 @@ const form = document.querySelector('form')
  * @param {FormData} formData
  * @param {string} outputName Class name of the output div.
  *                            Will be created if it does not exist already
+ *
+ * @returns {string|null} the extracted udp payload bytes as hexstring
  */
 const fetchToBox = async (formData, outputName) => {
   const options = {
@@ -29,6 +31,30 @@ const fetchToBox = async (formData, outputName) => {
   } else {
     console.warn(data)
   }
+
+  if (data.bytes) {
+    return data.bytes
+  } else {
+    console.warn("no bytes in response")
+    console.warn(data)
+  }
+  return null
+}
+
+/**
+ * update url to make the current state sharable via link
+ *
+ * @param {string} key
+ * @param {string} value
+ */
+const setQueryParam = (key, value) => {
+  if(!value) {
+    return
+  }
+  urlParams.set(key, value)
+  // window.location.search = urlParams
+  // window.history.pushState('teeworlds traffic decoder', '', urlParams)
+  window.history.replaceState({}, '', `${location.pathname}?${urlParams}`)
 }
 
 const decode = async () => {
@@ -47,10 +73,12 @@ const decode = async () => {
         break
       }
       formData.set('data', split)
-      await fetchToBox(formData, `output-${String(i).padStart(2, '0')}`)
+      const bytes = await fetchToBox(formData, `output-${String(i).padStart(2, '0')}`)
+      setQueryParam('d', bytes) // TODO: sum up
     }
   } else {
-    fetchToBox(formData, 'output-01')
+    const bytes = await fetchToBox(formData, 'output-01')
+    setQueryParam('d', bytes)
   }
 }
 
@@ -61,4 +89,37 @@ form.addEventListener('submit', (event) => {
 
 input.addEventListener('keyup', () => {
   decode()
+})
+
+if (globalConfig['d']) {
+  input.value = globalConfig['d']
+  decode()
+}
+
+const checkProt6 = document.querySelector('#protocol-6')
+const checkProt7 = document.querySelector('#protocol-7')
+if (globalConfig['v']) {
+  if(globalConfig['v'].includes('6')) {
+    checkProt6.checked = true
+  } else {
+    checkProt6.checked = false
+  }
+  if(globalConfig['v'].includes('7')) {
+    checkProt7.checked = true
+  } else {
+    checkProt7.checked = false
+  }
+}
+
+[checkProt6, checkProt7].forEach((checkbox) => {
+  checkbox.addEventListener('change', () => {
+    let versions = []
+    if (checkProt6.checked) {
+      versions.push('6')
+    }
+    if (checkProt7.checked) {
+      versions.push('7')
+    }
+    setQueryParam('v', versions.join(''))
+  })
 })
