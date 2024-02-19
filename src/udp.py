@@ -15,6 +15,7 @@ def extract_udp_payload(data: bytes) -> Tuple[bytes, List[str]]:
     try:
         ip = dpkt.ethernet.Ethernet(data).data
         if not isinstance(ip.data, dpkt.udp.UDP):
+            print("not ethernet")
             raise ValueError("not udp")
         udp_payload = ip.data.data
         messages.append("extracting udp payload from ethernet packet ...")
@@ -28,11 +29,12 @@ def extract_udp_payload(data: bytes) -> Tuple[bytes, List[str]]:
             raise ValueError("not udp")
         udp_payload = ip.data.data
         messages.append("extracting udp payload from ip packet ...")
-    except ValueError: # TODO: catch all again when done with debugging
+    except:
         pass
 
     data = udp_payload
     return (data, messages)
+
 
 
 # data = \
