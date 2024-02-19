@@ -1,6 +1,9 @@
 # teeworlds-web-traffic-decoder
 Paste your raw teeworlds traffic as hex and get annotations about which package that is
 
+![image](https://github.com/ChillerDragon/teeworlds-web-traffic-decoder/assets/20344300/2fe66dc9-564a-4e54-b94d-a0cdc56b187e)
+
+
 ### setup
 
     python -m pip install -r requirements.txt
