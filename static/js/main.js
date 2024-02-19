@@ -1,21 +1,58 @@
 const input = document.querySelector('#data')
-const output = document.querySelector('.output')
+const outputs = document.querySelector('.outputs')
+const output1 = document.querySelector('.output-01')
 const form = document.querySelector('form')
 
-const decode = () => {
-  const data = input.value
+/**
+ * fetch backend with data from form
+ * and create div with response
+ *
+ * @param {FormData} formData
+ * @param {string} outputName Class name of the output div.
+ *                            Will be created if it does not exist already
+ */
+const fetchToBox = (formData, outputName) => {
   const options = {
     method: 'POST',
-    body: new FormData(form)
+    body: formData
   }
   fetch(form.action, options)
     .then(response => response.json())
     .then(data => {
-      console.log(data)
       if (data.message) {
-        output.innerHTML = data.message
+        const outputDiv = document.querySelector(`.${outputName}`)
+        if (!outputDiv) {
+          outputs.insertAdjacentHTML('beforeend', `<div class="${outputName} code-snippet delete-me">${data.message}</div>`)
+        } else {
+          outputDiv.innerHTML = data.message
+        }
+      } else {
+        console.warn(data)
       }
     })
+}
+
+const decode = () => {
+  const formData = new FormData(form)
+  const tcpdumpSplits = getTcpDumpSplits(input.value)
+
+  const deleteMes = document.querySelectorAll('.delete-me')
+  deleteMes.forEach((deleteMe) => deleteMe.remove())
+
+  if (tcpdumpSplits) {
+    let i = 0
+    for(const split of tcpdumpSplits) {
+      i++
+      if (i >= 19) {
+        console.warn('Maximum number of tcpdump splits reached. Ignoring the rest.')
+        break
+      }
+      formData.set('data', split)
+      fetchToBox(formData, `output-${String(i).padStart(2, '0')}`)
+    }
+  } else {
+    fetchToBox(formData, 'output-01')
+  }
 }
 
 form.addEventListener('submit', (event) => {
