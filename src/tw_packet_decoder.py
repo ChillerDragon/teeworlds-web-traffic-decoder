@@ -1,5 +1,3 @@
-import sys
-import time
 import traceback
 
 import re
@@ -11,10 +9,11 @@ from importlib.metadata import version
 import dpkt
 import twnet_parser.packet
 import twnet_parser.huffman
+from twnet_parser.packet import TwPacket
 
 from .tcpdump import hex_from_tcpdump
 
-def str_to_bytes(data):
+def str_to_bytes(data: str) -> bytes:
     data = data.strip()
     if re.match('^b[\'\"].*[\'\"]$', data):
         return ast.literal_eval(data)
@@ -22,17 +21,16 @@ def str_to_bytes(data):
     if re.match('^0x', data):
         data = data.replace('0x', '')
 
-    data = bytes(bytearray.fromhex(data))
-    return data
+    return bytes(bytearray.fromhex(data))
 
-def twpacket_to_str(packet):
+def twpacket_to_str(packet: TwPacket) -> str:
     messages = []
     messages.append(str(packet.header))
     for msg in packet.messages:
         messages.append(str(msg))
     return '\n'.join(messages)
 
-def hex_str_to_annotation(hex_str):
+def hex_str_to_annotation(hex_str: str) -> str:
     # data = """  4500 0035 1aeb 4000 4011 21cb 7f00 0001
     #   7f00 0001 f367 206f 0021 fe34 100c 0142
     #     780d 8855 e9f0 87e6 0768 d6d0 5bf8 692f
