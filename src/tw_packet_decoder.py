@@ -27,7 +27,7 @@ def twpacket_to_str(packet: TwPacket) -> str:
     messages.append(str(packet.header))
     for msg in packet.messages:
         messages.append(str(msg))
-    return '\n'.join(messages)
+    return '\n'.join(messages).replace('<', '&lt;').replace('>', '&gt;')
 
 class HexInfo(TypedDict):
     message: str
