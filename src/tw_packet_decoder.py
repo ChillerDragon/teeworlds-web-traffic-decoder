@@ -22,13 +22,6 @@ def str_to_bytes(data: str) -> bytes:
 
     return bytes(bytearray.fromhex(data))
 
-def twpacket_to_str(packet: TwPacket) -> str:
-    messages = []
-    messages.append(str(packet.header))
-    for msg in packet.messages:
-        messages.append(str(msg))
-    return '\n'.join(messages).replace('<', '&lt;').replace('>', '&gt;')
-
 class HexInfo(TypedDict):
     message: str
     bytes: str
@@ -71,7 +64,7 @@ def hex_str_to_annotation(hex_str: str, protocol_6: bool, protocol_7: bool) -> H
         messages.append("--- 0.7")
         try:
             packet = twnet_parser.packet.parse7(data)
-            messages.append(twpacket_to_str(packet))
+            messages.append(packet.to_json())
         except Exception:
             messages.append(traceback.format_exc())
 
@@ -79,7 +72,7 @@ def hex_str_to_annotation(hex_str: str, protocol_6: bool, protocol_7: bool) -> H
         messages.append("--- 0.6")
         try:
             packet = twnet_parser.packet.parse6(data)
-            messages.append(twpacket_to_str(packet))
+            messages.append(packet.to_json())
         except Exception:
             messages.append(traceback.format_exc())
 
