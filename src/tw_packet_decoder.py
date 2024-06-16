@@ -7,7 +7,7 @@ from typing import TypedDict
 
 import twnet_parser.packet
 import twnet_parser.huffman
-from twnet_parser.packet import TwPacket
+from twnet_parser.packet import PacketHeader, TwPacket
 
 from .tcpdump import hex_from_tcpdump
 from .udp import extract_udp_payload
@@ -22,9 +22,27 @@ def str_to_bytes(data: str) -> bytes:
 
     return bytes(bytearray.fromhex(data))
 
+def packetheader_to_str(header: PacketHeader) -> str:
+    header_dict = {}
+    header_dict["flags"] = []
+    if header.flags.resend:
+        header_dict["flags"].append("resend")
+    if header.flags.connless:
+        header_dict["flags"].append("connless")
+    if header.flags.compression:
+        header_dict["flags"].append("compression")
+    if header.flags.control:
+        header_dict["flags"].append("control")
+    header_dict["ack"] = header.ack
+    header_dict["token"] = header.token
+    header_dict["num_chunks"] = header.num_chunks
+    header_dict["connless_version"] = header.connless_version
+    header_dict["response_token"] = header.response_token
+    return str(header_dict)
+
 def twpacket_to_str(packet: TwPacket) -> str:
     messages = []
-    messages.append(str(packet.header))
+    messages.append(packetheader_to_str(packet.header))
     for msg in packet.messages:
         messages.append(str(msg))
     return '\n'.join(messages)
