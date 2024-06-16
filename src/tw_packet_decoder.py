@@ -17,6 +17,8 @@ def str_to_bytes(data: str) -> bytes:
     if re.match('^b[\'\"].*[\'\"]$', data):
         return ast.literal_eval(data)
 
+    data = re.sub(r',\s*0x', '', data)
+
     if re.match('^0x', data):
         data = data.replace('0x', '')
 
