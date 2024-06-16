@@ -34,6 +34,10 @@ def test_comma_0xhex():
     print(info)
     assert info['bytes'] == '00 01 ff'
 
+def test_space_comma_0xhex():
+    info: HexInfo = hex_str_to_annotation('0x01, 0x02', protocol_6=True, protocol_7=True)
+    print(info)
+    assert info['bytes'] == '01 02'
 
 def test_tpcudmp_payload_misleading_pairs():
     data = """
@@ -44,7 +48,6 @@ def test_tpcudmp_payload_misleading_pairs():
                 0x0030:  040f 0026 3e5a 3704                      ...&>Z7.
     """
     info: HexInfo = hex_str_to_annotation(data, protocol_6=True, protocol_7=True)
-    print(info)
     assert info['bytes'] == '04 0f 00 26 3e 5a 37 04'
 
 
@@ -57,6 +60,5 @@ def test_tpcudmp_payload_misleading_pairs_and_ascii_dump():
                 0x0030:  040f 0026 3e5a 3704                      ...&>Z7. [0xaa, 0xdd]
     """
     info: HexInfo = hex_str_to_annotation(data, protocol_6=True, protocol_7=True)
-    print(info)
     assert info['bytes'] == '04 0f 00 26 3e 5a 37 04'
 
