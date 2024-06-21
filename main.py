@@ -24,8 +24,8 @@ def index():
 def validate_user_payload(payload):
     if not payload:
         return {'error': 'payload can not be empty'}
-    if len(payload) > 1024:
-        return {'error': 'payload can not be bigger than 1024'}
+    if len(payload) > 1500:
+        return {'error': 'payload can not be bigger than 1500'}
     return None
 
 @app.route('/api/v1/decode/<string:packet>', methods=["POST"])
