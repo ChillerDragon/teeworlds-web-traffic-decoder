@@ -22,10 +22,11 @@ def index():
     return render_template('index.html.j2', foo = "bar")
 
 def validate_user_payload(payload):
+    max_playload_size = 2500
     if not payload:
         return {'error': 'payload can not be empty'}
-    if len(payload) > 1500:
-        return {'error': 'payload can not be bigger than 1500'}
+    if len(payload) > max_playload_size:
+        return {'error': f"payload can not be bigger than {max_playload_size} (yours is {len(payload)})"}
     return None
 
 @app.route('/api/v1/decode/<string:packet>', methods=["POST"])
