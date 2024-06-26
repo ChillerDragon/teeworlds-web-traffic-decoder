@@ -2,6 +2,34 @@ const input = document.querySelector('#data')
 const outputs = document.querySelector('.outputs')
 const output1 = document.querySelector('.output-01')
 const form = document.querySelector('form')
+const flashesAlertDom = document.querySelector('.flashes-alert')
+const flashesInfoDom = document.querySelector('.flashes-info')
+let flashIdCounter = 0
+
+/**
+ * Show red flash on the top of the html page
+ *
+ * @param {string} msg
+ */
+const addFlashAlert = (msg) => {
+  const maxFlashes = 6
+  const numFlashes = document.querySelectorAll('.flash-alert').length
+
+  if (numFlashes >= maxFlashes) {
+    document.querySelector('.flash-alert').remove()
+  }
+  flashIdCounter++
+  const flashId = `flash-${flashIdCounter}`
+  const flashDiv = `
+    <div class="flash flash-alert" id="${flashId}">
+      <p>${msg}</p>
+      <div class="flash-close">x</div>
+    </div>
+  `
+  flashesAlertDom.insertAdjacentHTML('beforeend', flashDiv)
+  const flashDom = document.querySelector(`#${flashId}`)
+  flashDom.addEventListener('click', () => flashDom.remove())
+}
 
 /**
  * fetch backend with data from form
@@ -30,6 +58,9 @@ const fetchToBox = async (formData, outputName) => {
     }
   } else {
     console.warn(data)
+    if (data.error) {
+      addFlashAlert(data.error)
+    }
     return null
   }
 

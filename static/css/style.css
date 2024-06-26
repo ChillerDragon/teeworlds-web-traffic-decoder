@@ -28,3 +28,28 @@ textarea {
   padding: 0;
   border-width: 0;
 }
+
+.flash {
+  border: 5px solid white;
+  border-radius: 3px;
+  padding: 8px;
+  margin: 3px;
+  color: white;
+  position: relative;
+}
+
+.flash-alert {
+  border-color: red;
+  background-color: rgb(226, 76, 76);
+}
+
+.flash-info {
+  border-color: green;
+  background-color: rgb(37, 158, 37);
+}
+
+.flash-close {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
