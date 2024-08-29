@@ -13,5 +13,5 @@ packaging==23.2
 pluggy==1.4.0
 pytest==8.0.1
 tomli==2.0.1
-twnet_parser==0.11.0
+twnet_parser==0.12.0
 Werkzeug==3.0.1
