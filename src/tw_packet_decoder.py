@@ -7,7 +7,6 @@ from typing import TypedDict
 
 import twnet_parser.packet
 import twnet_parser.huffman
-from twnet_parser.packet import TwPacket
 
 from .tcpdump import hex_from_tcpdump
 from .udp import extract_udp_payload
