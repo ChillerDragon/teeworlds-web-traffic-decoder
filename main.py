@@ -22,7 +22,7 @@ def index():
     return render_template('index.html.j2', foo = "bar")
 
 def validate_user_payload(payload):
-    max_playload_size = 4000
+    max_playload_size = 5000
     if not payload:
         return {'error': 'payload can not be empty'}
     if len(payload) > max_playload_size:
