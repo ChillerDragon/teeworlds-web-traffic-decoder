@@ -39,7 +39,7 @@ const addFlashAlert = (msg) => {
  * @param {string} outputName Class name of the output div.
  *                            Will be created if it does not exist already
  *
- * @returns {string|null} the extracted udp payload bytes as hexstring
+ * @returns {Promise<string|null>} the extracted udp payload bytes as hexstring
  */
 const fetchToBox = async (formData, outputName) => {
   const options = {
