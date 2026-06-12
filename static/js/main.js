@@ -1,3 +1,6 @@
+import { globalConfig, setQueryParam } from "./config.js"
+import { getTcpDumpSplits } from "./split.js"
+
 const input = document.querySelector('#data')
 const outputs = document.querySelector('.outputs')
 const output1 = document.querySelector('.output-01')

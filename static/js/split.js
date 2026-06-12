@@ -49,7 +49,7 @@
  * @param {string} data hexdump userinput
  * @returns {string[]|null}
  */
-const getTcpDumpSplits = (data) => {
+export const getTcpDumpSplits = (data) => {
   // splits on this
   // 03:11:31.128677 IP6 localhost.55752 > localhost.8303: UDP, length 8
   const tcpdumpSplits = data.split(/(^|\n|\r|\r\n)\d\d:\d\d:\d\d\.\d+ IP(6|4)? [^:]+>[^:]+: UDP, length \d+($|\n|\r|\r\n)/)

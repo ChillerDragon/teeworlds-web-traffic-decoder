@@ -10,7 +10,7 @@ const urlParams = new URLSearchParams(document.location.search)
  *                      for example "6" or "7" or "67"
  * @property {string} d input hexdump data for decoding
  */
-const globalConfig = {
+export const globalConfig = {
   v: '67',
   d: ''
 }
@@ -30,7 +30,7 @@ console.log(globalConfig)
  * @param {string} key
  * @param {string} value
  */
-const setQueryParam = (key, value) => {
+export const setQueryParam = (key, value) => {
   if(!value) {
     return
   }
