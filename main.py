@@ -14,7 +14,7 @@ def req_ipaddr() -> str:
         return request.remote_addr
     return request.environ['HTTP_X_FORWARDED_FOR'].split(',')[-1].strip()
 
-def log_request() -> str:
+def log_request() -> None:
     app.logger.info(f"{request.method} {request.url} ip={req_ipaddr()} ua={request.headers.get('User-Agent')}")
 
 @app.route('/')
