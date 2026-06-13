@@ -7,7 +7,7 @@ gunicorn==26.0.0
 iniconfig==2.3.0
 itsdangerous==2.2.0
 Jinja2==3.1.6
-libtw2-huffman==0.2.1
+libtw2-huffman==0.2.2
 MarkupSafe==3.0.3
 packaging==26.2
 pluggy==1.6.0
